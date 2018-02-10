@@ -57,7 +57,7 @@ class Test_get_vcvars(unittest.TestCase):
         })
 
         mock_find_installation_paths.assert_called_once_with()
-        mock_select_vcvarsall.assert_called_once_with(settings,[
+        mock_select_vcvarsall.assert_called_once_with(settings, [
             {
                 "installationVersion": "15.5.27130.2026",
                 "productId": "Microsoft.VisualStudio.Product.Community",
@@ -82,3 +82,4 @@ class Test_get_vcvars(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
