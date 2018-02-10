@@ -12,10 +12,23 @@ class Test_get_vcvars(unittest.TestCase):
     @patch("get_vcvars.select_vcvarsall")
     @patch("get_vcvars.find_installation_paths")
     def test_normal(self, mock_find_installation_paths, mock_select_vcvarsall, mock_get_environment_variables):
-        mock_find_installation_paths.return_value = {
-            "15.5.27130.2026": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community",
-            "14.0": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\"
-        }
+        mock_find_installation_paths.return_value = [
+            {
+                "installationVersion": "15.5.27130.2026",
+                "productId": "Microsoft.VisualStudio.Product.Community",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community"
+            },
+            {
+                "installationVersion": "15.5.27130.2020",
+                "productId": "Microsoft.VisualStudio.Product.BuildTools",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
+            },
+            {
+                "installationVersion": "14.0",
+                "productId": "VisualStudio.14.0",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\"
+            }
+        ]
         mock_select_vcvarsall.return_value = [
             "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
             ["amd64"]
@@ -44,10 +57,23 @@ class Test_get_vcvars(unittest.TestCase):
         })
 
         mock_find_installation_paths.assert_called_once_with()
-        mock_select_vcvarsall.assert_called_once_with(settings, {
-            "15.5.27130.2026": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community",
-            "14.0": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\"
-        })
+        mock_select_vcvarsall.assert_called_once_with(settings,[
+            {
+                "installationVersion": "15.5.27130.2026",
+                "productId": "Microsoft.VisualStudio.Product.Community",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community"
+            },
+            {
+                "installationVersion": "15.5.27130.2020",
+                "productId": "Microsoft.VisualStudio.Product.BuildTools",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
+            },
+            {
+                "installationVersion": "14.0",
+                "productId": "VisualStudio.14.0",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\"
+            }
+        ])
         mock_get_environment_variables.assert_called_once_with(
             "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
             ["amd64"]
