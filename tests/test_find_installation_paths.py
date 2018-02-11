@@ -1,11 +1,12 @@
 import unittest
 from unittest.mock import patch
 import os
+import platform
 
 
 import get_vcvars
 import subprocess
-
+from conans.errors import ConanException
 
 vswhere_output = r'''
 [
@@ -130,6 +131,13 @@ class Test_find_installation_paths(unittest.TestCase):
         ])
 
         mock_check_output.assert_called_once_with(["vswhere.exe", "-products", "*", "-legacy", "-format", "json"])
+
+    def test_run_on_non_windows(self):
+        if platform.system == "Windows":
+            return
+        os.environ["PATH"] = os.getcwd() + ":" + os.environ["PATH"]
+        with self.assertRaises(ConanException):
+            get_vcvars.find_installation_paths()
 
 
 if __name__ == "__main__":

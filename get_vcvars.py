@@ -4,10 +4,15 @@ import os
 
 
 from conans.util.files import decode_text
+from conans.errors import ConanException
 
 
 def find_installation_paths():
-    vswhere_output = subprocess.check_output(["vswhere.exe", "-products", "*", "-legacy", "-format", "json"])
+    vswhere_output = None
+    try:
+        vswhere_output = subprocess.check_output(["vswhere.exe", "-products", "*", "-legacy", "-format", "json"])
+    except OSError:
+        raise ConanException("Can`t run vswhere.exe!")
     vswhere_text = decode_text(vswhere_output).strip()
     vswhere_text = vswhere_text.replace(r"\\", "/")
     vswhere_json = json.loads(vswhere_text)
