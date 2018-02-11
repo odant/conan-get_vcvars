@@ -4,7 +4,7 @@ from conans import ConanFile, tools
 class TestPackage(ConanFile):
     settings = {
         "os": ["Windows"],
-        "arch": ["x86", "x86_64"]
+        "arch": ["x86", "x86_64"],
         "compiler": ["Visual Studio"]
     }
 
