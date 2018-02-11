@@ -39,12 +39,16 @@ def select_vcvarsall(settings, installation_paths):
     }.get(str(settings.arch))
     args = [arch]
     for item in installation_paths:
+        if not item["installationVersion"].startswith("15") and settings.compiler.version == 15:
+            continue
         vcvarsall = os.path.join(item["installationPath"], "VC/Auxiliary/Build/vcvarsall.bat")
         if not os.path.isfile(vcvarsall):
             continue
         if item["installationVersion"].startswith("15") and settings.compiler.version == 14:
             args.append("-vcvars_ver=14.0")
         return vcvarsall, args
+    else:
+        raise ConanException("Can`t find vcvarsall.bat")
 
 def get_environment_variables(vcvarsall, args):
     return {}
