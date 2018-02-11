@@ -11,6 +11,6 @@ if __name__ == "__main__":
         username=username,
         exclude_vcvars_precommand=True
     )
-    bbuilder.add_common_builds()
+    builder.add_common_builds()
     builder.run()
 
