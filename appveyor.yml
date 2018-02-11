@@ -1,0 +1,36 @@
+skip_tags: true
+
+environment:
+#  PYTHON: C:\\Python36
+#  PYTHON_VERSION: 3.6.3
+#  PYTHON_ARCH: 32
+
+  CONAN_PRINT_RUN_COMMANDS: 1
+  CONAN_LOG_RUN_TO_OUTPUT: 1
+
+  CONAN_USERNAME: odant
+  CONAN_REFERENCE: get_vcvars/1.0
+
+  CONAN_UPLOAD: https://api.bintray.com/conan/odant/conan
+  CONAN_LOGIN_USERNAME: dvetutnev
+  CONAN_STABLE_BRANCH_PATTERN: release/*
+
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
+install:
+  - git submodule update --init --recursive
+
+  - set PATH=%PYTHON%;%PYTHON%\\Scripts\\;%PATH%
+  - pip install conan
+  - pip install conan_package_tools
+  - pip install nose2
+
+  - conan user
+
+build:
+  - nose2
+
+test_script:
+  - python build.py
+
