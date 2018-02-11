@@ -8,7 +8,7 @@ class TestPackage(ConanFile):
         with tools.pythonpath(self):
             import get_vcvars
             self.output.info("--------Visual Studio enviroment--------")
-            self.output.info("arch: %s compiler.version: %s" % (self.setting.arch, self.settings.compiler.version))
+            self.output.info("arch: %s compiler.version: %s" % (self.settings.arch, self.settings.compiler.version))
             env_vcvars = get_vcvars.get_vcvars(self.settings)
             for key, value in env_vcvars.items():
                 self.output.info("%s :" % key)
