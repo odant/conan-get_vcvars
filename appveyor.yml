@@ -28,9 +28,9 @@ install:
 
   - conan user
 
-build:
-  - nose2
+build: false
 
 test_script:
+  - nose2
   - python build.py
 
