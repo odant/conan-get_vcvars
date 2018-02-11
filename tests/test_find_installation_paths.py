@@ -7,23 +7,23 @@ import get_vcvars
 import subprocess
 
 
-vswhere_output = '''
+vswhere_output = r'''
 [
   {
     "instanceId": "d8ae1ead",
     "installDate": "2018-01-10T14:23:04Z",
     "installationName": "VisualStudio/15.5.3+27130.2020",
-    "installationPath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2017\\\\BuildTools",
+    "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio/2017\\BuildTools",
     "installationVersion": "15.5.27130.2020",
     "productId": "Microsoft.VisualStudio.Product.BuildTools",
-    "productPath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2017\\\\BuildTools\\\\Common7\\\\Tools\\\\LaunchDevCmd.bat",
+    "productPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\Common7\\Tools\\LaunchDevCmd.bat",
     "isPrerelease": false,
     "displayName": "Visual Studio Build Tools 2017",
     "description": "Visual Studio Build Tools позволяет осуществлять сборку собственных и управляемых приложений на базе MSBuild без использования среды Visual Studio IDE. Существуют разные варианты установки компиляторов и библиотек Visual C++, ATL, MFC и поддержки C++/CLI.",
     "channelId": "VisualStudio.15.Release",
-    "channelPath": "C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\Microsoft\\\\VisualStudio\\\\Packages\\\\_Channels\\\\4CB340F5\\\\catalog.json",
+    "channelPath": "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\VisualStudio\\Packages\\_Channels\\4CB340F5\\catalog.json",
     "channelUri": "https://aka.ms/vs/15/release/channel",
-    "enginePath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\Installer\\\\resources\\\\app\\\\ServiceHub\\\\Services\\\\Microsoft.VisualStudio.Setup.Service",
+    "enginePath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\resources\\app\\ServiceHub\\Services\\Microsoft.VisualStudio.Setup.Service",
     "releaseNotes": "https://go.microsoft.com/fwlink/?LinkId=660692#15.5.3",
     "thirdPartyNotices": "https://go.microsoft.com/fwlink/?LinkId=660708",
     "catalog": {
@@ -48,24 +48,24 @@ vswhere_output = '''
       "campaignId": "1622459557.1502792825",
       "channelManifestId": "VisualStudio.15.Release/15.5.3+27130.2020",
       "nickname": "2",
-      "setupEngineFilePath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\Installer\\\\vs_installershell.exe"
+      "setupEngineFilePath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vs_installershell.exe"
     }
   },
   {
     "instanceId": "5667fd94",
     "installDate": "2017-08-15T11:08:46Z",
     "installationName": "VisualStudio/15.5.5+27130.2026",
-    "installationPath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2017\\\\Community",
+    "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community",
     "installationVersion": "15.5.27130.2026",
     "productId": "Microsoft.VisualStudio.Product.Community",
-    "productPath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2017\\\\Community\\\\Common7\\\\IDE\\\\devenv.exe",
+    "productPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\IDE\\devenv.exe",
     "isPrerelease": false,
     "displayName": "Visual Studio Community 2017",
     "description": "Бесплатная полнофункциональная интегрированная среда разработки для учащихся, разработчиков решений с открытым кодом и индивидуальных разработчиков",
     "channelId": "VisualStudio.15.Release",
-    "channelPath": "C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\Microsoft\\\\VisualStudio\\\\Packages\\\\_Channels\\\\4CB340F5\\\\catalog.json",
+    "channelPath": "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\VisualStudio\\Packages\\_Channels\\4CB340F5\\catalog.json",
     "channelUri": "https://aka.ms/vs/15/release/channel",
-    "enginePath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\Installer\\\\resources\\\\app\\\\ServiceHub\\\\Services\\\\Microsoft.VisualStudio.Setup.Service",
+    "enginePath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\resources\\app\\ServiceHub\\Services\\Microsoft.VisualStudio.Setup.Service",
     "releaseNotes": "https://go.microsoft.com/fwlink/?LinkId=660692#15.5.3",
     "thirdPartyNotices": "https://go.microsoft.com/fwlink/?LinkId=660708",
     "catalog": {
@@ -92,12 +92,12 @@ vswhere_output = '''
       "channelManifestId": "VisualStudio.15.Release/15.5.5+27130.2026",
       "defaultProgram": "VisualStudio.5667fd94",
       "nickname": "",
-      "setupEngineFilePath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\Installer\\\\vs_installershell.exe"
+      "setupEngineFilePath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vs_installershell.exe"
     }
   },
   {
     "instanceId": "VisualStudio.14.0",
-    "installationPath": "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio 14.0\\\\",
+    "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\",
     "installationVersion": "14.0"
   }
 ]
@@ -105,7 +105,6 @@ vswhere_output = '''
 
 
 class Test_find_installation_paths(unittest.TestCase):
-
 
     @patch("subprocess.check_output")
     def test_normal(self, mock_check_output):
@@ -116,17 +115,17 @@ class Test_find_installation_paths(unittest.TestCase):
             {
                 "productId": "Microsoft.VisualStudio.Product.Community",
                 "installationVersion": "15.5.27130.2026",
-                "installationPath": os.path.dirname("C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community")
+                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community"
             },
             {
                 "productId": "Microsoft.VisualStudio.Product.BuildTools",
                 "installationVersion": "15.5.27130.2020",
-                "installationPath": os.path.dirname("C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools")
+                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
             },
             {
                 "productId": "VisualStudio.14.0",
                 "installationVersion": "14.0",
-                "installationPath": os.path.dirname("C:\\Program Files (x86)\\Microsoft Visual Studio 14.0")
+                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio 14.0"
             }
         ])
 
