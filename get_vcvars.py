@@ -63,8 +63,12 @@ def select_vcvarsall(settings, installation_paths):
         raise ConanException("Can`t find vcvarsall.bat")
 
 def get_environment_variables(vcvarsall, args):
-    cmd = "call %s %s %s" % (vcvarsall, " ".join(args), "&& echo __BEGINS__ && set")
-    set_output = subprocess.check_output(cmd, shell=True)
+    cmd = "call \"%s\" %s %s" % (vcvarsall, " ".join(args), "&& echo __BEGINS__ && set")
+    set_output = None
+    try:
+        set_output = subprocess.check_output(cmd, shell=True)
+    except subprocess.CalledProcessError as e:
+        raise ConanException("Can`t run vcvarsall.bat! %s" % str(e))
     set_text = decode_text(set_output)
     result = {}
     start_reached = False

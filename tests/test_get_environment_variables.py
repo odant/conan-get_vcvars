@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import get_vcvars
 import subprocess
+from conans.errors import ConanException
 
 
 set_output = r'''
@@ -37,8 +38,14 @@ class Test_get_environment_variables(unittest.TestCase):
             "LIBPATH": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\MSVC\\14.12.25827\\lib\\x64;",
             "PATH": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.12.25827\\bin\\HostX64\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.16299.0\\x64;"
         })
-        cmd = "call " + vcvarsall + " amd64 -vcvars_ver=14.0 && echo __BEGINS__ && set"
+        cmd = "call \"" + vcvarsall + "\" amd64 -vcvars_ver=14.0 && echo __BEGINS__ && set"
         mock_subprocess_check_output.assert_called_once_with(cmd, shell=True)
+
+    def test_expeption(self):
+        vcvarsall = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.ba_"
+        args = ["amd64", "-vcvars_ver=14.0"]
+        with self.assertRaises(ConanException):
+            get_vcvars.get_environment_variables(vcvarsall, args)
 
 
 if __name__ == "__main__":
