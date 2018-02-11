@@ -28,8 +28,18 @@ def find_installation_paths():
     return result
 
 def select_vcvarsall(settings, installation_paths):
-    vs_instance = installation_paths[0]
-    return os.path.join(vs_instance["installationPath"], "VC", "Auxiliary", "Build", "vcvarsall.bat"), ["amd64"]
+    arch = {
+        "x86": "x86",
+        "x86_64": "amd64"
+    }.get(str(settings.arch))
+    args = [arch]
+    for item in installation_paths:
+        vcvarsall = os.path.join(item["installationPath"], "VC/Auxiliary/Build/vcvarsall.bat")
+        if not os.path.isfile(vcvarsall):
+            continue
+        if item["installationVersion"].startswith("15") and settings.compiler.version == 14:
+            args.append("-vcvars_ver=14.0")
+        return vcvarsall, args
 
 def get_environment_variables(vcvarsall, args):
     return {}
