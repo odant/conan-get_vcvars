@@ -32,7 +32,18 @@ def find_installation_paths():
     return result
 
 def find_vcvarsall(installation_paths):
-    return []
+    result = []
+    for item in installation_paths:
+        vcvarsall = None
+        if item["installationVersion"].startswith("15"):
+            vcvarsall = os.path.join(item["installationPath"], "VC\\Auxiliary\\Build\\vcvarsall.bat")
+        else:
+            vcvarsall = os.path.join(item["installationPath"], "VC\\vcvarsall.bat")
+        if not os.path.isfile(vcvarsall):
+            continue
+        item["vcvarsall"] = vcvarsall
+        result.append(item)
+    return result
     
 def select_vcvarsall(settings, installation_paths):
     arch = {
