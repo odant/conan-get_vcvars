@@ -1,27 +1,16 @@
-import os
 from conan.packager import ConanMultiPackager
+import os
 
 
 # Common settings
 username = "odant" if "CONAN_USERNAME" not in os.environ else None
 
-    
+
 if __name__ == "__main__":
     builder = ConanMultiPackager(
         username=username,
         exclude_vcvars_precommand=True
     )
-    builder.add(
-        settings={"arch": "x86"},
-        options={},
-        env_vars={},
-        build_requires={}
-    )
-    builder.add(
-        settings={"arch": "x86_64"},
-        options={},
-        env_vars={},
-        build_requires={}
-    )
+    bbuilder.add_common_builds()
     builder.run()
 
