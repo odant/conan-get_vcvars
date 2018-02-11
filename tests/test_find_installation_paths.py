@@ -114,26 +114,26 @@ class Test_find_installation_paths(unittest.TestCase):
         result = get_vcvars.find_installation_paths()
         self.assertEqual(result, [
             {
-                "productId": "Microsoft.VisualStudio.Product.Community",
                 "installationVersion": "15.5.27130.2026",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community"
+                "productId": "Microsoft.VisualStudio.Product.Community",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community"
             },
             {
-                "productId": "Microsoft.VisualStudio.Product.BuildTools",
                 "installationVersion": "15.5.27130.2020",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
+                "productId": "Microsoft.VisualStudio.Product.BuildTools",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
             },
             {
-                "productId": "VisualStudio.14.0",
                 "installationVersion": "14.0",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio 14.0"
+                "productId": "VisualStudio.14.0",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0"
             }
         ])
 
         mock_check_output.assert_called_once_with(["vswhere.exe", "-products", "*", "-legacy", "-format", "json"])
 
     def test_run_on_non_windows(self):
-        if platform.system == "Windows":
+        if platform.system() == "Windows":
             return
         os.environ["PATH"] = os.getcwd() + ":" + os.environ["PATH"]
         with self.assertRaises(ConanException):

@@ -14,7 +14,6 @@ def find_installation_paths():
     except OSError:
         raise ConanException("Can`t run vswhere.exe!")
     vswhere_text = decode_text(vswhere_output).strip()
-    vswhere_text = vswhere_text.replace(r"\\", "/")
     vswhere_json = json.loads(vswhere_text)
     result = []
     for item in vswhere_json:
@@ -41,7 +40,7 @@ def select_vcvarsall(settings, installation_paths):
     for item in installation_paths:
         if not item["installationVersion"].startswith("15") and settings.compiler.version == 15:
             continue
-        vcvarsall = os.path.join(item["installationPath"], "VC/Auxiliary/Build/vcvarsall.bat")
+        vcvarsall = os.path.join(item["installationPath"], "VC\\Auxiliary\\Build\\vcvarsall.bat")
         if not os.path.isfile(vcvarsall):
             continue
         if item["installationVersion"].startswith("15") and settings.compiler.version == 14:

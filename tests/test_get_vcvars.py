@@ -14,28 +14,28 @@ class Test_get_vcvars(unittest.TestCase):
     def test_normal(self, mock_find_installation_paths, mock_select_vcvarsall, mock_get_environment_variables):
         mock_find_installation_paths.return_value = [
             {
-                "installationVersion": "15.5.27130.2026",
                 "productId": "Microsoft.VisualStudio.Product.Community",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community"
+                "installationVersion": "15.5.27130.2026",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community"
             },
             {
-                "installationVersion": "15.5.27130.2020",
                 "productId": "Microsoft.VisualStudio.Product.BuildTools",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
+                "installationVersion": "15.5.27130.2020",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
             },
             {
-                "installationVersion": "14.0",
                 "productId": "VisualStudio.14.0",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio 14.0/"
+                "installationVersion": "14.0",
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\"
             }
         ]
         mock_select_vcvarsall.return_value = [
-            "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat",
+            "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
             ["amd64"]
         ]
         mock_get_environment_variables.return_value = {
-            "INCLUDE": "C:/include",
-            "PATH": "C:/bin"
+            "INCLUDE": "C:\\include",
+            "PATH": "C:\\bin"
         }
         settings = Settings(definition={
             "arch": ["x86", "x86_64"],
@@ -52,8 +52,8 @@ class Test_get_vcvars(unittest.TestCase):
         result = get_vcvars.get_vcvars(settings)
         
         self.assertEqual(result, {
-            "INCLUDE": "C:/include",
-            "PATH": "C:/bin"
+            "INCLUDE": "C:\\include",
+            "PATH": "C:\\bin"
         })
 
         mock_find_installation_paths.assert_called_once_with()
@@ -61,21 +61,21 @@ class Test_get_vcvars(unittest.TestCase):
             {
                 "installationVersion": "15.5.27130.2026",
                 "productId": "Microsoft.VisualStudio.Product.Community",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community"
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community"
             },
             {
                 "installationVersion": "15.5.27130.2020",
                 "productId": "Microsoft.VisualStudio.Product.BuildTools",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
             },
             {
                 "installationVersion": "14.0",
                 "productId": "VisualStudio.14.0",
-                "installationPath": "C:/Program Files (x86)/Microsoft Visual Studio 14.0/"
+                "installationPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\"
             }
         ])
         mock_get_environment_variables.assert_called_once_with(
-            "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat",
+            "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
             ["amd64"]
         )
 
