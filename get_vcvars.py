@@ -31,6 +31,9 @@ def find_installation_paths():
     result.sort(key=lambda v: v["installationVersion"], reverse=True)
     return result
 
+def find_vcvarsall(installation_paths):
+    return []
+    
 def select_vcvarsall(settings, installation_paths):
     arch = {
         "x86": "x86",
@@ -54,5 +57,6 @@ def get_environment_variables(vcvarsall, args):
     
 def get_vcvars(settings):
     installation_paths = find_installation_paths()
+    installation_paths = find_vcvarsall(installation_paths)
     vcvarsall, args = select_vcvarsall(settings, installation_paths)
     return get_environment_variables(vcvarsall, args)
