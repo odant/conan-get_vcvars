@@ -7,6 +7,7 @@ class TestPackage(ConanFile):
         "arch": ["x86", "x86_64"],
         "compiler": ["Visual Studio"]
     }
+    _env_vcvars = {}
 
     def build(self):
         with tools.pythonpath(self):
@@ -19,7 +20,10 @@ class TestPackage(ConanFile):
                 self.output.info("Variable %s =>" % key)
                 for split_value in value.split(";"):
                     self.output.info(split_value)
+            self._env_vcvars = env_vcvars
 
     def test(self):
-        pass
+        with tools.environment_append(self._env_vcvars):
+            self.output.info("Check run MS Resource Compiler (from Windows SDK)")
+            self.run("rc /?")
 
