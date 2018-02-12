@@ -1,10 +1,12 @@
 import subprocess
 import json
 import os
+import sys
 
 
 from conans.util.files import decode_text
 from conans.errors import ConanException
+from conans.client.output import ConanOutput
 
 
 def find_installation_paths():
@@ -62,8 +64,13 @@ def select_vcvarsall(settings, installation_paths):
     else:
         raise ConanException("Can`t find vcvarsall.bat")
 
-def get_environment_variables(vcvarsall, args):
+def get_environment_variables(vcvarsall, args, logger=None):
+    logger = logger or ConanOutput(sys.stdout, False)
+    #
     cmd = "call \"%s\" %s %s" % (vcvarsall, " ".join(args), "&& echo __BEGINS__ && set")
+    logger.info("------------------- Run vcvarsall.bat and capture environment -----------")
+    logger.info(cmd)
+    logger.info("-------------------------------------------------------------------------")
     set_output = None
     try:
         set_output = subprocess.check_output(cmd, shell=True)
@@ -84,8 +91,17 @@ def get_environment_variables(vcvarsall, args):
         result[name_var.upper()] = value
     return result
     
-def get_vcvars(settings):
-    installation_paths = find_installation_paths()
-    installation_paths = find_vcvarsall(installation_paths)
-    vcvarsall, args = select_vcvarsall(settings, installation_paths)
+def get_vcvars(settings, logger=None):
+    logger = logger or ConanOutput(sys.stdout, False)
+    #
+    installations = find_installation_paths()
+    logger.info("------------------- Found Visual Studio installations -------------------")
+    for item in installations:
+        logger.info("productId: %s" % item["productId"])
+        logger.info("installationVersion: %s" % item["installationVersion"])
+        logger.info("installationPath: %s" % item["installationPath"])
+        logger.info("-------------------------------------------------------------------------")
+    #
+    installations = find_vcvarsall(installations)
+    vcvarsall, args = select_vcvarsall(settings, installations)
     return get_environment_variables(vcvarsall, args)
